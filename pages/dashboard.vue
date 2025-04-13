@@ -6,7 +6,8 @@ definePageMeta({
 
 <template>
   <div>
-    <h1>Welcome to your dashboard</h1>
-    <NuxtLink to="/">home</NuxtLink>
+    <TextHeading>Welcome to your dashboard
+    </TextHeading>
+    <ULink to="/">home</ULink>
   </div>
 </template>

@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  --ui-primary: var(--ui-color-primary-700);
+}
+
+.dark {
+  --ui-primary: var(--ui-color-primary-200);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+  line-height: var(--text-5xl--line-height);
+}
+
+h2 {
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--line-height);
+}
+
+h3 {
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+}
+
+h4 {
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+}
+
+h5 {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+}
+
+h6 {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+}
+
+html,
+body {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { z } from "zod";
+
 const { loggedIn, fetch: refreshSession } = useUserSession()
 const credentials = reactive({
   email: '',
@@ -23,8 +25,8 @@ async function login() {
 
 <template>
   <form @submit.prevent="login">
-    <input v-model="credentials.email" type="email" placeholder="Email">
-    <input v-model="credentials.password" type="password" placeholder="Password">
-    <button type="submit">Login</button>
+    <UInput v-model="credentials.email" type="email" placeholder="Email" />
+    <UInput v-model="credentials.password" type="password" placeholder="Password" />
+    <UButton type="submit">Login</UButton>
   </form>
 </template>

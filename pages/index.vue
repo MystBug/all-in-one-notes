@@ -8,7 +8,7 @@ const { user } = useUserSession()
 
 <template>
   <div>
-    <h1>Welcome {{ user?.name }}</h1>
-    <NuxtLink to="/dashboard">dashboard</NuxtLink>
+    <TextHeading>Welcome {{ user?.name }}</TextHeading>
+    <ULink to="/dashboard">dashboard</ULink>
   </div>
 </template>
