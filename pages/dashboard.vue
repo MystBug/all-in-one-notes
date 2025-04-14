@@ -6,7 +6,8 @@ definePageMeta({
 
 <template>
   <div>
-    <TextHeading>Welcome to your dashboard
+    <TextHeading>
+      Welcome to your dashboard
     </TextHeading>
     <ULink to="/">home</ULink>
   </div>
