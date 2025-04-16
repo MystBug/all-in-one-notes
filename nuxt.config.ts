@@ -11,7 +11,16 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "@nuxt/ui",
     "nuxt-auth-utils",
+    "@pinia/nuxt",
   ],
 
   css: ["~/assets/css/main.css"],
+
+  runtimeConfig: {
+    public: {
+      apiUrl: "",
+      apiAnonymousKey: "",
+      apiSecretKey: "",
+    },
+  },
 });

@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '~/stores/auth'
 
-const { clear: clearSession, user } = useUserSession()
+const store = useAuthStore()
+const { credentials, loggedIn } = storeToRefs(store)
+
+const { clear: clearSession } = useUserSession()
 
 const logout = async () => {
   await clearSession()
   await navigateTo('/login')
-  console.log('logging out?')
 }
 
 const items2 = computed(() => {
@@ -17,13 +21,13 @@ const items2 = computed(() => {
     }
   ]
 
-  if (user.value) arr.push({
+  if (loggedIn) arr.push({
     type: 'label',
-    label: user.value!.name,
+    label: credentials.value.email,
     icon: 'i-lucide-user',
   })
 
-  if (user.value) arr.push({
+  if (loggedIn) arr.push({
     label: 'Logout',
     icon: 'i-lucide-log-out',
     onSelect: () => logout()

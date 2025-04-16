@@ -1,14 +1,16 @@
 <script setup lang="ts">
+const store = useAuthStore()
+const {credentials} = storeToRefs(store)
 definePageMeta({
   middleware: ['authenticated'],
 })
 
-const { user } = useUserSession()
+await callOnce('user', () => store.fetchUser())
 </script>
 
 <template>
   <div>
-    <TextHeading>Welcome {{ user?.name }}</TextHeading>
+    <TextHeading>Welcome {{ credentials.email }}</TextHeading>
     <ULink to="/dashboard">dashboard</ULink>
 
     <USeparator class="py-4" />
