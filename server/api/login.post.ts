@@ -4,8 +4,17 @@ import bodySchema from "~/zod/auth";
 export default defineEventHandler(async (event) => {
   const { apiUrl, apiSecretKey } = useRuntimeConfig().public;
   const supabase = createClient(apiUrl, apiSecretKey);
-  const { email, password } = await readValidatedBody(event, bodySchema.parse);
 
+  const { email, password } = await readValidatedBody(
+    event,
+    bodySchema.parse
+  ).catch(() =>
+    createError({
+      statusCode: 400,
+      message: "E-mail or password incorrect",
+      data: { field: "email & password" },
+    })
+  );
   await supabase.auth
     .signInWithPassword({ email, password })
     .then(async (data) => {

@@ -28,9 +28,9 @@ export const useAuthStore = defineStore("auth", () => {
               loggedIn.value = true;
               navigateTo("/");
             })
-            .catch((err) => err);
+            .catch((err: Error) => err);
         })
-        .catch(() => alert("Bad credentials"));
+        .catch((err: Error) => err);
     } else {
       console.log("setting user", user.value);
       loggedIn.value = isLoggedIn.value;
