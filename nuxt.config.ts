@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "nuxt-auth-utils",
     "@pinia/nuxt",
+    "@vee-validate/nuxt",
   ],
 
   css: ["~/assets/css/main.css"],

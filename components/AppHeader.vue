@@ -9,7 +9,10 @@ const { credentials, loggedIn } = storeToRefs(store)
 const { clear: clearSession } = useUserSession()
 
 const logout = async () => {
-  await clearSession()
+  await clearSession().then(() => {
+    credentials.value.email = ''
+    loggedIn.value = false
+  })
   await navigateTo('/login')
 }
 
@@ -21,13 +24,13 @@ const items2 = computed(() => {
     }
   ]
 
-  if (loggedIn) arr.push({
+  if (loggedIn.value) arr.push({
     type: 'label',
     label: credentials.value.email,
     icon: 'i-lucide-user',
   })
 
-  if (loggedIn) arr.push({
+  if (loggedIn.value) arr.push({
     label: 'Logout',
     icon: 'i-lucide-log-out',
     onSelect: () => logout()

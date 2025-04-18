@@ -1,11 +1,9 @@
 <script setup lang="ts">
 const store = useAuthStore()
-const {credentials} = storeToRefs(store)
+const { credentials } = storeToRefs(store)
 definePageMeta({
   middleware: ['authenticated'],
 })
-
-await callOnce('user', () => store.fetchUser())
 </script>
 
 <template>

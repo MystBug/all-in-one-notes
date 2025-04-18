@@ -6,37 +6,47 @@ export const useAuthStore = defineStore("auth", () => {
     loggedIn: isLoggedIn,
     user,
   } = useUserSession();
-  const loggedIn = ref(false);
+
+  const initialState = {
+    loggedIn: isLoggedIn.value || false,
+    credentials: {
+      email: user.value?.email || "",
+    },
+  };
+
+  const loggedIn = ref(initialState.loggedIn);
   const credentials = ref({
-    email: "",
+    email: initialState.credentials.email,
   });
 
-  const fetchUser = (pwd?: string) => {
+  const fetchUser = (email: string, pwd?: string) => {
     if (!isLoggedIn.value) {
-      console.log("actually fetching user");
-      $fetch("/api/login", {
+      return $fetch("/api/login", {
         method: "POST",
         body: {
-          email: credentials.value.email,
+          email,
           password: pwd,
         },
-      })
-        .then(async () => {
-          // Refresh the session on client-side and redirect to the home page
-          await refreshSession()
-            .then(() => {
-              loggedIn.value = true;
-              navigateTo("/");
-            })
-            .catch((err: Error) => err);
-        })
-        .catch((err: Error) => err);
+      }).then(async () => {
+        // Refresh the session on client-side and redirect to the home page
+        await refreshSession().then(() => {
+          loggedIn.value = true;
+          credentials.value.email = email;
+          navigateTo("/");
+        });
+      });
     } else {
-      console.log("setting user", user.value);
-      loggedIn.value = isLoggedIn.value;
-      credentials.value.email = user.value?.email || "";
+      if (isLoggedIn.value) {
+        credentials.value.email = user.value?.email || email;
+        navigateTo("/");
+      }
     }
   };
 
-  return { fetchUser, credentials, loggedIn };
+  const reset = () => {
+    loggedIn.value = initialState.loggedIn;
+    credentials.value.email = initialState.credentials.email;
+  };
+
+  return { fetchUser, reset, credentials, loggedIn };
 });

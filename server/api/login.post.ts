@@ -1,26 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
-import bodySchema from "~/zod/auth";
 
 export default defineEventHandler(async (event) => {
+  const { email, password } = await readBody(event);
   const { apiUrl, apiSecretKey } = useRuntimeConfig().public;
   const supabase = createClient(apiUrl, apiSecretKey);
 
-  const { email, password } = await readValidatedBody(
-    event,
-    bodySchema.parse
-  ).catch(() =>
-    createError({
-      statusCode: 400,
-      message: "E-mail or password incorrect",
-      data: { field: "email & password" },
-    })
-  );
-  await supabase.auth
+  return await supabase.auth
     .signInWithPassword({ email, password })
     .then(async (data) => {
       const user = data.data.user;
 
-      if (user?.id) {
+      if (user?.aud) {
         // set the user session in the cookie
         // this server util is auto-imported by the auth-utils module
         await setUserSession(event, {
@@ -29,14 +19,16 @@ export default defineEventHandler(async (event) => {
             name: user.email!,
           },
         });
-        return {};
       }
-      throw createError({
-        statusCode: 401,
-        message: "Bad credentials",
-      });
+      if (data.error) {
+        throw createError({
+          statusCode: data.error?.status,
+          message: "Login failed",
+          data: { code: data.error?.code },
+        });
+      }
     })
     .catch((err) => {
-      throw new Error(err);
+      throw createError(err);
     });
 });
